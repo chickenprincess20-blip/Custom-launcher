@@ -33,21 +33,24 @@ class LauncherActivity : Activity() {
         }
 
         commandCenter?.onFocusSelectedListener = { selectedFocus ->
-            stateController.setCurrentFocusMode(selectedFocus) { profile ->
-                val name = profile.profileName
-                android.util.Log.d("FocusLauncher", "Active Profile Name: $name")
-            }
+            stateController.setCurrentFocusMode(selectedFocus, object : LauncherStateController.OnProfileSwappedListener {
+                override fun onProfileSwapped(profile: FocusProfile) {
+                    val name = profile.profileName
+                    android.util.Log.d("FocusLauncher", "Active Profile Name: $name")
+                }
+            })
             commandCenter?.visibility = View.GONE
         }
 
         val currentMode = stateController.getCurrentFocusMode()
-        stateController.setCurrentFocusMode(currentMode) { _ ->
-            // Base initialization block setup clear
-        }
+        stateController.setCurrentFocusMode(currentMode, object : LauncherStateController.OnProfileSwappedListener {
+            override fun onProfileSwapped(profile: FocusProfile) {
+                // Initial boot setup completed safely
+            }
+        })
     }
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
-        // Keeps layouts locked safe during folding shifts on your Razr
     }
 }
