@@ -25,12 +25,34 @@ jobs:
         gradle-version: '8.5'
         cache-disabled: true
 
-    - name: Fetch Clean Verified AndroidManifest
+    - name: Automatically Construct Pristine Manifest File
       run: |
         mkdir -p app/src/main
-        curl -s https://github.com > app/src/main/AndroidManifest.xml
+        cat << 'EOF' > app/src/main/AndroidManifest.xml
+        <?xml version="1.0" encoding="utf-8"?>
+        <manifest xmlns:android="http://android.com">
+            <uses-permission android:name="android.permission.SET_WALLPAPER" />
+            <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+            <application
+                android:allowBackup="true"
+                android:icon="@android:drawable/sym_def_app_icon"
+                android:label="Focus Launcher"
+                android:theme="@style/Theme.AppCompat.NoActionBar">
+                <activity
+                    android:name="com.custom.razrfocus.LauncherActivity"
+                    android:exported="true"
+                    android:launchMode="singleTask">
+                    <intent-filter>
+                        <action android:name="android.intent.action.MAIN" />
+                        <category android:name="android.intent.category.HOME" />
+                        <category android:name="android.intent.category.DEFAULT" />
+                    </intent-filter>
+                </activity>
+            </application>
+        </manifest>
+        EOF
 
-    - name: Purge Cache Mappings and Clean Workspace
+    - name: Clear Workspace Cache Objects
       run: gradle clean
 
     - name: Compile Debug Launcher APK
@@ -42,4 +64,3 @@ jobs:
         name: FocusLauncher-Debug-APK
         path: app/build/outputs/apk/debug/app-debug.apk
         retention-days: 7
-        
