@@ -7,7 +7,7 @@ import android.widget.ImageButton
 import com.custom.focuslauncher.R
 import com.custom.focuslauncher.LauncherStateController
 import com.custom.focuslauncher.FocusType
-import com.custom.focuslauncher.data.FocusProfile
+import com.custom.focuslauncher.FocusProfile
 
 class LauncherActivity : Activity() {
 
