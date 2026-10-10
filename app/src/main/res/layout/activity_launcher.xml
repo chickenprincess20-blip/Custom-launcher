@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.custom.focuslauncher.ui.LauncherRootContainer 
+    xmlns:android="http://android.com"
+    android:id="@+id/global_root_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#121212">
+
+    <!-- Rigid mechanical braking page carousel -->
+    <com.custom.focuslauncher.ui.LauncherPager
+        android:id="@+id/home_screen_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+
+    <!-- Clean floating trigger button to slide up the focus switcher -->
+    <ImageButton
+        android:id="@+id/btn_command_center_toggle"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_manage"
+        android:contentDescription="Toggle Focus Control Hub" />
+
+    <!-- Control Center Overlay layer -->
+    <com.custom.focuslauncher.ui.CommandCenterView
+        android:id="@+id/command_center_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <!-- Anchor viewport holding the full-screen swipe up app drawer fragment -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</com.custom.focuslauncher.ui.LauncherRootContainer>
