@@ -24,34 +24,8 @@ jobs:
       with:
         gradle-version: '8.5'
 
-    - name: Force Overwrite Manifest (Clears Mobile Browser Formatting Errors)
-      run: |
-        cat << 'EOF' > app/src/main/AndroidManifest.xml
-        <?xml version="1.0" encoding="utf-8"?>
-        <manifest xmlns:android="http://android.com">
-            <uses-permission android:name="android.permission.SET_WALLPAPER" />
-            <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-            <application
-                android:allowBackup="true"
-                android:icon="@android:drawable/sym_def_app_icon"
-                android:label="Focus Launcher"
-                android:theme="@style/Theme.AppCompat.NoActionBar">
-                <activity
-                    android:name="com.custom.focuslauncher.LauncherActivity"
-                    android:exported="true"
-                    android:launchMode="singleTask">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.intent.category.HOME" />
-                        <category android:name="android.intent.category.DEFAULT" />
-                    </intent-filter>
-                </activity>
-            </application>
-        </manifest>
-        EOF
-
     - name: Compile Debug Launcher APK
-      run: gradle assembleDebug
+      run: gradle assembleDebug --stacktrace
 
     - name: Upload Completed APK to GitHub Artifacts
       uses: actions/upload-artifact@v4
@@ -59,4 +33,3 @@ jobs:
         name: FocusLauncher-Debug-APK
         path: app/build/outputs/apk/debug/app-debug.apk
         retention-days: 7
-        
