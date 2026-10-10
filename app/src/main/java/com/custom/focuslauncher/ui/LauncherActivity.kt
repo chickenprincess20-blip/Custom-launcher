@@ -1,52 +1,27 @@
-package com.custom.focuslauncher.ui
+package com.custom.focuslauncher
 
-import android.app.Activity
-import android.os.Bundle
-import android.view.View
-import android.widget.ImageButton
-import com.custom.focuslauncher.R
-import com.custom.focuslauncher.LauncherStateController
-import com.custom.focuslauncher.FocusType
+import android.content.Context
+import android.content.SharedPreferences
 
-class LauncherActivity : Activity() {
+class LauncherStateController(private val context: Context) {
+    private val prefs: SharedPreferences = context.getSharedPreferences("FocusLauncherPrefs", Context.MODE_PRIVATE)
 
-    private lateinit var stateController: LauncherStateController
-    private var launcherPager: LauncherPager? = null
-    private var commandCenter: CommandCenterView? = null
-    private var toggleButton: ImageButton? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_launcher)
-
-        stateController = LauncherStateController(this)
-        
-        launcherPager = findViewById(R.id.home_screen_pager)
-        commandCenter = findViewById(R.id.command_center_overlay)
-        toggleButton = findViewById(R.id.btn_command_center_toggle)
-
-        toggleButton?.setOnClickListener {
-            commandCenter?.let { cc ->
-                cc.visibility = if (cc.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-            }
-        }
-
-        commandCenter?.onFocusSelectedListener = { selectedFocus ->
-            stateController.setCurrentFocusMode(selectedFocus) { profile ->
-                // Explicit type parameters provided to satisfy compiler type inference
-                val activeProfileName = profile.profileName
-                android.util.Log.d("FocusLauncher", "Swapped to: $activeProfileName")
-            }
-            commandCenter?.visibility = View.GONE
-        }
-
-        val currentMode = stateController.getCurrentFocusMode()
-        stateController.setCurrentFocusMode(currentMode) { _ -> 
-            // Satisfies type footprint on initial startup
-        }
+    fun setCurrentFocusMode(type: FocusType, onProfileSwapped: (com.custom.focuslauncher.data.FocusProfile) -> Unit) {
+        prefs.edit().putString("ACTIVE_FOCUS_MODE", type.name).apply()
+        val profile = loadProfileData(type)
+        onProfileSwapped(profile)
     }
 
-    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
-        super.onConfigurationChanged(newConfig)
+    fun getCurrentFocusMode(): FocusType {
+        val name = prefs.getString("ACTIVE_FOCUS_MODE", FocusType.DEFAULT.name)
+        return FocusType.valueOf(name ?: FocusType.DEFAULT.name)
+    }
+
+    private fun loadProfileData(type: FocusType): com.custom.focuslauncher.data.FocusProfile {
+        return when(type) {
+            FocusType.WORK -> com.custom.focuslauncher.data.FocusProfile(type, "Work Focus", null, listOf("com.google.android.gm"))
+            FocusType.PERSONAL -> com.custom.focuslauncher.data.FocusProfile(type, "Personal Focus", null, listOf("com.instagram.android"))
+            else -> com.custom.focuslauncher.data.FocusProfile(type, "Default Screen", null, emptyList())
+        }
     }
 }
