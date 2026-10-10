@@ -1,24 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://android.com">
+name: Compile Focus Launcher APK
 
-    <uses-permission android:name="android.permission.SET_WALLPAPER" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
-    <application
-        android:allowBackup="true"
-        android:icon="@android:drawable/sym_def_app_icon"
-        android:label="Focus Launcher"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
-        
-        <activity
-            android:name="com.custom.focuslauncher.LauncherActivity"
-            android:exported="true"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.HOME" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-    </application>
-</manifest>
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+
+    - name: Set up Java Development Kit (JDK 17)
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Automatically Install and Setup Gradle Engine
+      uses: gradle/actions/setup-gradle@v4
+      with:
+        gradle-version: '8.5'
+
+    - name: Compile Debug Launcher APK
+      run: gradle assembleDebug --stacktrace
+
+    - name: Upload Completed APK to GitHub Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: FocusLauncher-Debug-APK
+        path: app/build/outputs/apk/debug/app-debug.apk
+        retention-days: 7
