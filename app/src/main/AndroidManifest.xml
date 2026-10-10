@@ -12,9 +12,9 @@
         android:label="Focus Launcher"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         
-        <!-- The core activity that catches your phone's home button presses -->
+        <!-- Core landing screen handler activity -->
         <activity
-            android:name=".LauncherActivity"
+            android:name="com.custom.focuslauncher.LauncherActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:clearTaskOnLaunch="true"
