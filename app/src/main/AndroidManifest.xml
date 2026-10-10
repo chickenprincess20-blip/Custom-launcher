@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://android.com"
     package="com.custom.focuslauncher">
 
+    <!-- Permissions required for focus-dependent theme shifts -->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
@@ -11,6 +12,7 @@
         android:label="Focus Launcher"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         
+        <!-- The core activity that catches your phone's home button presses -->
         <activity
             android:name=".LauncherActivity"
             android:exported="true"
