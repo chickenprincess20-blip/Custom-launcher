@@ -12,7 +12,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         
         <activity
-            android:name="com.custom.focuslauncher.LauncherActivity"
+            android:name="com.custom.razrfocus.LauncherActivity"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>
