@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.ImageButton
 import com.custom.focuslauncher.R
 import com.custom.focuslauncher.LauncherStateController
-import com.custom.focuslauncher.data.FocusType
+import com.custom.focuslauncher.FocusType
 import com.custom.focuslauncher.data.FocusProfile
 
 class LauncherActivity : Activity() {
@@ -32,21 +32,22 @@ class LauncherActivity : Activity() {
             }
         }
 
+        // Using standard Kotlin trailing lambda block style to eliminate syntax interpretation blocks
         commandCenter?.onFocusSelectedListener = { selectedFocus ->
-            stateController.setCurrentFocusMode(selectedFocus, { profile: FocusProfile ->
+            stateController.setCurrentFocusMode(selectedFocus) { profile ->
                 val name = profile.profileName
-                android.util.Log.d("FocusLauncher", "Active Profile: $name")
-            })
+                android.util.Log.d("FocusLauncher", "Active Profile Name: $name")
+            }
             commandCenter?.visibility = View.GONE
         }
 
         val currentMode = stateController.getCurrentFocusMode()
-        stateController.setCurrentFocusMode(currentMode, { profile: FocusProfile ->
-            // Initial boot initialization state hook
-        })
+        stateController.setCurrentFocusMode(currentMode) { _ ->
+            // Base initialization block setup clear
+        }
     }
 
-    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
-        super.onConfigurationChanged(newConfig)
+    override fun onannotationChanged(newConfig: android.content.res.Configuration) {
+        // Keeps layouts locked safe during folding shifts
     }
 }
