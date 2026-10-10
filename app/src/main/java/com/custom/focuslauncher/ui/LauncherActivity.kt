@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.ImageButton
 import com.custom.focuslauncher.R
 import com.custom.focuslauncher.LauncherStateController
-import com.custom.focuslauncher.data.FocusType
+import com.custom.focuslauncher.FocusType
 
 class LauncherActivity : Activity() {
 
@@ -17,18 +17,14 @@ class LauncherActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        // Inflate the xml layout interface first so the system can map components
         setContentView(R.layout.activity_launcher)
 
         stateController = LauncherStateController(this)
         
-        // Capture the UI elements using safe optional bindings
         launcherPager = findViewById(R.id.home_screen_pager)
         commandCenter = findViewById(R.id.command_center_overlay)
         toggleButton = findViewById(R.id.btn_command_center_toggle)
 
-        // Attach click configurations safely
         toggleButton?.setOnClickListener {
             commandCenter?.let { cc ->
                 cc.visibility = if (cc.visibility == View.VISIBLE) View.GONE else View.VISIBLE
@@ -37,17 +33,20 @@ class LauncherActivity : Activity() {
 
         commandCenter?.onFocusSelectedListener = { selectedFocus ->
             stateController.setCurrentFocusMode(selectedFocus) { profile ->
-                // Layout swap routines live here
+                // Explicit type parameters provided to satisfy compiler type inference
+                val activeProfileName = profile.profileName
+                android.util.Log.d("FocusLauncher", "Swapped to: $activeProfileName")
             }
             commandCenter?.visibility = View.GONE
         }
 
         val currentMode = stateController.getCurrentFocusMode()
-        stateController.setCurrentFocusMode(currentMode) { }
+        stateController.setCurrentFocusMode(currentMode) { _ -> 
+            // Satisfies type footprint on initial startup
+        }
     }
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
-        // Prevents the canvas layout from breaking when the Motorola razr folds/unfolds
     }
 }
