@@ -28,8 +28,7 @@ jobs:
       run: |
         cat << 'EOF' > app/src/main/AndroidManifest.xml
         <?xml version="1.0" encoding="utf-8"?>
-        <manifest xmlns:android="http://android.com"
-            package="com.custom.focuslauncher">
+        <manifest xmlns:android="http://android.com">
             <uses-permission android:name="android.permission.SET_WALLPAPER" />
             <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
             <application
