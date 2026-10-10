@@ -1,13 +1,9 @@
-package com.custom.focuslauncher.ui
+package com.custom.focuslauncher
 
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
-import com.custom.focuslauncher.R
-import com.custom.focuslauncher.LauncherStateController
-import com.custom.focuslauncher.FocusType
-import com.custom.focuslauncher.FocusProfile
 
 class LauncherActivity : Activity() {
 
