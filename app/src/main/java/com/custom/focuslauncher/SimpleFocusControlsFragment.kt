@@ -11,7 +11,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.app.Fragment
-import com.custom.focuslauncher.data.FocusType
 
 class SimpleFocusControlsFragment : Fragment() {
 
@@ -57,7 +56,6 @@ class SimpleFocusControlsFragment : Fragment() {
     }
 
     private fun updateLauncherFocus(mode: FocusType) {
-        // Return back to core canvas interface loop cleanly
         activity?.onBackPressed()
     }
 }
