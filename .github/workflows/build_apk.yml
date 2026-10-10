@@ -25,32 +25,10 @@ jobs:
         gradle-version: '8.5'
         cache-disabled: true
 
-    - name: Generate Clean Manifest File on Server
+    - name: Native Write Clean Manifest
       run: |
-        mkdir -p launcher/app/src/main
-        cat << 'EOF' > launcher/app/src/main/AndroidManifest.xml
-        <?xml version="1.0" encoding="utf-8"?>
-        <manifest xmlns:android="http://android.com">
-            <uses-permission android:name="android.permission.SET_WALLPAPER" />
-            <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
-            <application
-                android:allowBackup="true"
-                android:icon="@android:drawable/sym_def_app_icon"
-                android:label="Focus Launcher"
-                android:theme="@style/Theme.AppCompat.NoActionBar">
-                <activity
-                    android:name="com.custom.razrfocus.LauncherActivity"
-                    android:exported="true"
-                    android:launchMode="singleTask">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN" />
-                        <category android:name="android.intent.category.HOME" />
-                        <category android:name="android.intent.category.DEFAULT" />
-                    </intent-filter>
-                </activity>
-            </application>
-        </manifest>
-        EOF
+        mkdir -p app/src/main
+        echo '<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://android.com"><uses-permission android:name="android.permission.SET_WALLPAPER"/><uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/><application android:allowBackup="true" android:icon="@android:drawable/sym_def_app_icon" android:label="Focus Launcher" android:theme="@style/Theme.AppCompat.NoActionBar"><activity android:name="com.custom.razrfocus.LauncherActivity" android:exported="true" android:launchMode="singleTask"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.HOME"/><category android:name="android.intent.category.DEFAULT"/></intent-filter></activity></application></manifest>' > app/src/main/AndroidManifest.xml
 
     - name: Purge Cache Mappings and Clean Workspace
       run: gradle clean
@@ -62,6 +40,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: FocusLauncher-Debug-APK
-        path: launcher/app/build/outputs/apk/debug/app-debug.apk
+        path: app/build/outputs/apk/debug/app-debug.apk
         retention-days: 7
-        
