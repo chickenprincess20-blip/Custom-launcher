@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.custom.focuslauncher.data.LauncherComponent
 
 class LauncherPager @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -37,5 +38,9 @@ class LauncherPager @JvmOverloads constructor(
             return true
         }
         return false
+    }
+
+    fun loadComponentsForPage(pageIndex: Int): List<LauncherComponent> {
+        return emptyList() // Clean data fallback hook
     }
 }
