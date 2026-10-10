@@ -1,4 +1,4 @@
-package com.custom.focuslauncher
+package com.custom.razrfocus
 
 import android.app.Activity
 import android.os.Bundle
@@ -41,7 +41,7 @@ class LauncherActivity : Activity() {
         val currentMode = stateController.getCurrentFocusMode()
         stateController.setCurrentFocusMode(currentMode, object : LauncherStateController.OnProfileSwappedListener {
             override fun onProfileSwapped(profile: FocusProfile) {
-                // Initial boot setup completed safely
+                // Boot setup completed safely
             }
         })
     }
