@@ -32,7 +32,6 @@ class LauncherActivity : Activity() {
             }
         }
 
-        // Using standard Kotlin trailing lambda block style to eliminate syntax interpretation blocks
         commandCenter?.onFocusSelectedListener = { selectedFocus ->
             stateController.setCurrentFocusMode(selectedFocus) { profile ->
                 val name = profile.profileName
@@ -47,7 +46,8 @@ class LauncherActivity : Activity() {
         }
     }
 
-    override fun onannotationChanged(newConfig: android.content.res.Configuration) {
-        // Keeps layouts locked safe during folding shifts
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
+        // Keeps layouts locked safe during folding shifts on your Razr
     }
 }
