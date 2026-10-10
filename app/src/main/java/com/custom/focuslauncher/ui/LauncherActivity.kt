@@ -1,27 +1,52 @@
-package com.custom.focuslauncher
+package com.custom.focuslauncher.ui
 
-import android.content.Context
-import android.content.SharedPreferences
+import android.app.Activity
+import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
+import com.custom.focuslauncher.R
+import com.custom.focuslauncher.LauncherStateController
+import com.custom.focuslauncher.data.FocusType
+import com.custom.focuslauncher.data.FocusProfile
 
-class LauncherStateController(private val context: Context) {
-    private val prefs: SharedPreferences = context.getSharedPreferences("FocusLauncherPrefs", Context.MODE_PRIVATE)
+class LauncherActivity : Activity() {
 
-    fun setCurrentFocusMode(type: FocusType, onProfileSwapped: (com.custom.focuslauncher.data.FocusProfile) -> Unit) {
-        prefs.edit().putString("ACTIVE_FOCUS_MODE", type.name).apply()
-        val profile = loadProfileData(type)
-        onProfileSwapped(profile)
-    }
+    private lateinit var stateController: LauncherStateController
+    private var launcherPager: LauncherPager? = null
+    private var commandCenter: CommandCenterView? = null
+    private var toggleButton: ImageButton? = null
 
-    fun getCurrentFocusMode(): FocusType {
-        val name = prefs.getString("ACTIVE_FOCUS_MODE", FocusType.DEFAULT.name)
-        return FocusType.valueOf(name ?: FocusType.DEFAULT.name)
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_launcher)
 
-    private fun loadProfileData(type: FocusType): com.custom.focuslauncher.data.FocusProfile {
-        return when(type) {
-            FocusType.WORK -> com.custom.focuslauncher.data.FocusProfile(type, "Work Focus", null, listOf("com.google.android.gm"))
-            FocusType.PERSONAL -> com.custom.focuslauncher.data.FocusProfile(type, "Personal Focus", null, listOf("com.instagram.android"))
-            else -> com.custom.focuslauncher.data.FocusProfile(type, "Default Screen", null, emptyList())
+        stateController = LauncherStateController(this)
+        
+        launcherPager = findViewById(R.id.home_screen_pager)
+        commandCenter = findViewById(R.id.command_center_overlay)
+        toggleButton = findViewById(R.id.btn_command_center_toggle)
+
+        toggleButton?.setOnClickListener {
+            commandCenter?.let { cc ->
+                cc.visibility = if (cc.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            }
         }
+
+        commandCenter?.onFocusSelectedListener = { selectedFocus ->
+            stateController.setCurrentFocusMode(selectedFocus, { profile: FocusProfile ->
+                val name = profile.profileName
+                android.util.Log.d("FocusLauncher", "Active Profile: $name")
+            })
+            commandCenter?.visibility = View.GONE
+        }
+
+        val currentMode = stateController.getCurrentFocusMode()
+        stateController.setCurrentFocusMode(currentMode, { profile: FocusProfile ->
+            // Initial boot initialization state hook
+        })
+    }
+
+    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
+        super.onConfigurationChanged(newConfig)
     }
 }
