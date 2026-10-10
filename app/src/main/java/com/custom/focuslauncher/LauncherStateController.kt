@@ -2,13 +2,12 @@ package com.custom.focuslauncher
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.custom.focuslauncher.data.FocusProfile
 
 class LauncherStateController(private val context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("FocusLauncherPrefs", Context.MODE_PRIVATE)
-    private var currentFocus: FocusType = FocusType.DEFAULT
 
     fun setCurrentFocusMode(type: FocusType, onProfileSwapped: (FocusProfile) -> Unit) {
-        currentFocus = type
         prefs.edit().putString("ACTIVE_FOCUS_MODE", type.name).apply()
         val profile = loadProfileData(type)
         onProfileSwapped(profile)
@@ -21,8 +20,8 @@ class LauncherStateController(private val context: Context) {
 
     private fun loadProfileData(type: FocusType): FocusProfile {
         return when(type) {
-            FocusType.WORK -> FocusProfile(type, "Work Focus", null, listOf("com.google.android.gm", "com.microsoft.teams"))
-            FocusType.PERSONAL -> FocusProfile(type, "Personal Focus", null, listOf("com.instagram.android", "com.spotify.music"))
+            FocusType.WORK -> FocusProfile(type, "Work Focus", null, listOf("com.google.android.gm"))
+            FocusType.PERSONAL -> FocusProfile(type, "Personal Focus", null, listOf("com.instagram.android"))
             else -> FocusProfile(type, "Default Screen", null, emptyList())
         }
     }
