@@ -7,10 +7,15 @@ import com.custom.focuslauncher.data.FocusProfile
 class LauncherStateController(private val context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("FocusLauncherPrefs", Context.MODE_PRIVATE)
 
-    fun setCurrentFocusMode(type: FocusType, onProfileSwapped: (FocusProfile) -> Unit) {
+    // Interface to handle profile swaps cleanly without lambda errors
+    interface OnProfileSwappedListener {
+        fun onProfileSwapped(profile: FocusProfile)
+    }
+
+    fun setCurrentFocusMode(type: FocusType, listener: OnProfileSwappedListener) {
         prefs.edit().putString("ACTIVE_FOCUS_MODE", type.name).apply()
         val profile = loadProfileData(type)
-        onProfileSwapped(profile)
+        listener.onProfileSwapped(profile)
     }
 
     fun getCurrentFocusMode(): FocusType {
