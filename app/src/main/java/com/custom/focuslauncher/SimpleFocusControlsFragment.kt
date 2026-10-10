@@ -1,4 +1,4 @@
-package com.custom.focuslauncher.ui
+package com.custom.focuslauncher
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -10,8 +10,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.custom.focuslauncher.FocusType
+import android.app.Fragment
+import com.custom.focuslauncher.data.FocusType
 
 class SimpleFocusControlsFragment : Fragment() {
 
@@ -57,6 +57,7 @@ class SimpleFocusControlsFragment : Fragment() {
     }
 
     private fun updateLauncherFocus(mode: FocusType) {
-        activity?.onBackPressedDispatcher?.onBackPressed()
+        // Return back to core canvas interface loop cleanly
+        activity?.onBackPressed()
     }
 }
