@@ -1,7 +1,10 @@
-package com.custom.focuslauncher.data
+package com.custom.focuslauncher
 
 import androidx.room.TypeConverter
-import com.custom.focuslauncher.FocusType
+
+enum class FocusType {
+    DEFAULT, WORK, PERSONAL, FITNESS
+}
 
 data class FocusProfile(
     val type: FocusType,
