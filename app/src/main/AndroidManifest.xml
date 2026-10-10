@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://android.com"
     package="com.custom.focuslauncher">
 
-    <!-- Permissions required for focus-dependent theme shifts -->
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
 
@@ -12,15 +11,10 @@
         android:label="Focus Launcher"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         
-        <!-- Core landing screen handler activity -->
         <activity
             android:name="com.custom.focuslauncher.LauncherActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:clearTaskOnLaunch="true"
-            android:stateNotNeeded="true"
-            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize">
-            
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
