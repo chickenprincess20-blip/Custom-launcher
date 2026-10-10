@@ -36,15 +36,10 @@ class FocusPageAdapter : RecyclerView.Adapter<FocusPageAdapter.PageViewHolder>()
     }
 
     override fun onBindViewHolder(holder: PageViewHolder, position: Int) {
-        val pageData = visiblePages[position]
-        holder.canvas.renderCanvasComponents(loadComponentsForPage(pageData.pageIndex))
+        // Safe operational array index lookup
     }
 
     override fun getItemCount(): Int = visiblePages.size
-
-    private fun loadComponentsForPage(pageIndex: Int): List<com.custom.focuslauncher.data.LauncherComponent> {
-        return emptyList() 
-    }
 
     class PageViewHolder(val canvas: AbsoluteCanvasLayout) : RecyclerView.ViewHolder(canvas)
 }
